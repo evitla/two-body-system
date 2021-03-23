@@ -14,3 +14,12 @@ class NuclearSystem:
   def potential(self, r):
     V = Potential(r)
     return V.Woods_Saxon(self) + V.Coulomb(self)
+
+
+class Calcium40_nucleon(NuclearSystem):
+  A, Z = 40, 20
+
+  def __init__(self, quantum_numbers, nucleon):
+    super().__init__(quantum_numbers, nucleon, A=self.A, Z=self.Z)
+    self.V0, self.Vso = -54.823, -10
+    self.a, self.r0 = 0.65, 1.2361
