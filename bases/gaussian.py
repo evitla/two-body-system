@@ -36,7 +36,15 @@ class GaussianBasis:
     def potential_integral_function(r, L, eta):
       wf = self.gaussians(r, L, eta)
       tmp_ijr = wf.reshape(-1,1,r.size) * wf.reshape(1,-1,r.size)
-      return nuclear_system.potential(r) * tmp_ijr * np.exp(r)
+      return nuclear_system.potential(r)["nuclear potential"] * tmp_ijr * np.exp(r)
+    return potential_integral_function(nuclear_system.L, eta)
+
+  def coulomb_potential(self, nuclear_system, eta, N):
+    @gauss_laguerre_quadrature(N)
+    def potential_integral_function(r, L, eta):
+      wf = self.gaussians(r, L, eta)
+      tmp_ijr = wf.reshape(-1,1,r.size) * wf.reshape(1,-1,r.size)
+      return nuclear_system.potential(r)["coulomb potential"] * tmp_ijr * np.exp(r)
     return potential_integral_function(nuclear_system.L, eta)
 
   def hamiltonian(self, nuclear_system, N):
@@ -49,15 +57,18 @@ class GaussianBasis:
     L = N_ij * self.overlap_matrix(nuclear_system.L, eta)
     H0 = N_ij * self.kinetic_potential(nuclear_system, eta)
     Vs = N_ij * self.nuclear_potential(nuclear_system, eta, N)
-    H = H0 + Vs
+    Vc = N_ij * self.coulomb_potential(nuclear_system, eta, N)
+    Hc = H0 + Vc
+    H = Hc + Vs
 
     low_matrix = np.linalg.cholesky(L)
     up_matrix = low_matrix.T
     inv_low_matrix = np.linalg.inv(low_matrix)
     inv_up_matrix = np.linalg.inv(up_matrix)
     new_H = np.dot(np.dot(inv_low_matrix, H), inv_up_matrix)
+    new_Hc = np.dot(np.dot(inv_low_matrix, Hc), inv_up_matrix)
     self.inv_up_matrix = inv_up_matrix
-    return new_H
+    return new_H, new_Hc
 
   def wavefunction(self, r, eigenvector, L):
     b = np.pi / 2 if L == 0 else np.pi / L / 3

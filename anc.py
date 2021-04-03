@@ -3,7 +3,7 @@ from mpmath import whitw
 from solve import solve
 
 def anc(r, nuclear_system, basis, N_laguerre):
-  bound_state = solve(nuclear_system, basis, N_laguerre)[0]
+  bound_state = solve(nuclear_system, basis, N_laguerre)["states"][0]
   wf = r * basis.wavefunction(r, bound_state.eigenvector, nuclear_system.L)
   
   k = np.sqrt(-2 * nuclear_system.mass * bound_state.energy)

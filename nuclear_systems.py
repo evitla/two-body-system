@@ -12,7 +12,10 @@ class NuclearSystem:
 
   def potential(self, r):
     V = Potential(r)
-    return V.Woods_Saxon(self) + V.Coulomb(self)
+    return {
+      "nuclear potential": V.Woods_Saxon(self),
+      "coulomb potential": V.Coulomb(self)
+    }
 
 
 class Calcium40_nucleon(NuclearSystem):
