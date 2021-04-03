@@ -23,3 +23,7 @@ class Calcium40_nucleon(NuclearSystem):
     super().__init__(quantum_numbers, nucleon, A=self.A, Z=self.Z)
     self.V0, self.Vso = -54.823, -10
     self.a, self.r0 = 0.65, 1.2361
+
+  def __repr__(self):
+    L_letter = ["s", "p", "d", "f", "g", "h", "j"]
+    return f"40Ca+{self.nucleon} | {L_letter[self.L]}{int(self.J * 2)}/2"

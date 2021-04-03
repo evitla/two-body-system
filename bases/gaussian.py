@@ -1,7 +1,7 @@
 import numpy as np
 from math import gamma, factorial
 
-from decorators import gauss_laguerre_quadrature
+from .decorators import gauss_laguerre_quadrature
 
 class GaussianBasis:
   def __init__(self, parameters, quadrature, hermitian=True):
@@ -47,7 +47,6 @@ class GaussianBasis:
             gamma(n) / ((1 + b**2)**(n / 2) + np.cos(n * np.arctan(b))))
     N_ij = N_cos * N_cos.T / 4
     L = N_ij * self.overlap_matrix(nuclear_system.L, eta)
-    print(L)
     H0 = N_ij * self.kinetic_potential(nuclear_system, eta)
     Vs = N_ij * self.nuclear_potential(nuclear_system, eta, N)
     H = H0 + Vs

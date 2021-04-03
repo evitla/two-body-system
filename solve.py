@@ -6,7 +6,7 @@ def solve(nuclear_system, basis, N_laguerre):
   energies, eigenvectors = eigensolve(H, basis.hermitian)
   create_state = lambda en, ev: SingleParticleStationaryState(en, ev,
                                                 nuclear_system, basis)
-  states = [create_state(en, ev) in zip(energies, eigenvectors.T)]
+  states = [create_state(en, ev) for en, ev in zip(energies, eigenvectors.T)]
   return states
 
 

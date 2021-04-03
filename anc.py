@@ -10,6 +10,6 @@ def anc(r, nuclear_system, basis, N_laguerre):
   eta = nuclear_system.Z * nuclear_system.mass / k.real
   whitw_ = np.zeros(r.size)
   for i in range(r.size):
-    whitw_[i] = whitw(-eta, nuclear.L + 0.5, 2 * k.real * r[i])
+    whitw_[i] = whitw(-eta, nuclear_system.L + 0.5, 2 * k.real * r[i])
 
   return wf.real / whitw_
